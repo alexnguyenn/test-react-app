@@ -38,7 +38,7 @@ const ExpenseForm = (props) => {
         event.preventDefault();
         const expenseData = {
             title: userInput.enteredTitle,
-            amount: userInput.enteredAmount,
+            amount: +userInput.enteredAmount,
             date: new Date(userInput.enteredDate),
         };
 
@@ -48,6 +48,10 @@ const ExpenseForm = (props) => {
             enteredAmount: "",
             enteredDate: "",
         });
+    };
+
+    const hideFormHandler = () => {
+        props.onHideForm();
     };
 
     return (
@@ -83,7 +87,10 @@ const ExpenseForm = (props) => {
                 </div>
             </div>
             <div className="new-expense__actions">
-                <button>Add Expense</button>
+                <button type="button" onClick={hideFormHandler}>
+                    Cancel
+                </button>
+                <button type="submit">Add Expense</button>
             </div>
         </form>
     );
