@@ -54,7 +54,7 @@ jobs:
   deploy-surge:
     runs-on: ubuntu-latest
     if: github.repository_owner == 'alexnguyenn'
-    needs: [lint]
+    needs: [lint, build]
     
     steps:
     - uses: actions/checkout@v2
