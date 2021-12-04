@@ -53,7 +53,7 @@ jobs:
 
   deploy-surge:
     runs-on: ubuntu-latest
-    if: github.repository_owner == alexnguyenn
+    if: github.repository_owner == 'alexnguyenn'
     needs: [lint]
     
     steps:
