@@ -72,7 +72,4 @@ jobs:
       run: npm install --global surge
       
     - name: Deploy preview to Surge
-      run: npx surge ./build alexnguyenn-test-app-preview.surge.sh
-      env:
-        SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
-    
+      run: surge ./ alexnguyenn-test-app-preview.surge.sh --token ${{ secrets.SURGE_TOKEN }}
