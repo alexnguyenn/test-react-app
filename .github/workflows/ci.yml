@@ -53,7 +53,7 @@ jobs:
 
   deploy-surge:
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'alexnguyenn'
+    if: github.repository_owner == 'alexnguyenn' && github.event_name == 'pull_request'
     needs: [lint, build]
     
     steps:
@@ -73,3 +73,27 @@ jobs:
       
     - name: Deploy preview to Surge
       run: surge ./ alexnguyenn-test-app-preview.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+      
+  tear-down-fail:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'alexnguyenn'
+    needs: [deploy-surge]
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Node JS
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16
+    
+    - name: Install Surge
+      run: npm install --global surge
+      
+    - name: Teardown without Token
+      run: surge teardown alexnguyenn-test-app-preview.surge.sh
+    
+    - name: Teardown Fake URL
+      run: surge teardown alexnguyenn-test-app-preview-1.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+
+    - name: Teardown with Token
+      run: surge teardown alexnguyenn-test-app-preview.surge.sh --token ${{ secrets.SURGE_TOKEN }}
