@@ -72,23 +72,20 @@ jobs:
       run: npm install --global surge
       
     - name: Deploy preview to Surge
-      run: surge ./ alexnguyenn-test-app-preview.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+      run: surge ./ https://alexnguyenn-test-app-preview.surge.sh --token ${{ secrets.SURGE_TOKEN }}
       
-  tear-down-fail:
-    runs-on: ubuntu-latest
-    if: github.repository_owner == 'alexnguyenn'
-    needs: [deploy-surge]
-    
-    steps:
-    - uses: actions/checkout@v2
-    - name: Setup Node JS
-      uses: actions/setup-node@v2
+    - uses: peter-evans/find-comment@v1
+      id: fc
       with:
-        node-version: 16
-    
-    - name: Install Surge
-      run: npm install --global surge
-    
-    - name: Teardown Fake URL
-      continue-on-error: true
-      run: surge teardown alexnguyenn-test-app-preview-1.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-author: 'github-actions[bot]'
+        body-includes: Preview is deployed to 
+
+    - name: Share deployment link
+      uses: peter-evans/create-or-update-comment@v1
+      with:
+        comment-id: ${{ steps.fc.outputs.comment-id }}
+        issue-number: ${{ github.event.pull_request.number }}
+        body: |
+          Preview is deployed to https://alexnguyenn-test-app-preview.surge.sh
+        edit-mode: replace
