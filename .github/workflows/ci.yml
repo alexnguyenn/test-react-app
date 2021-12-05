@@ -58,7 +58,10 @@ jobs:
     env:
       SURGE_DOMAIN: ${{ format('https://{0}-{1}-preview-pr{2}.surge.sh', github.repository_owner, 
         github.event.repository.name, github.event.pull_request.number) }}
-    
+    environment:
+      name: development
+      url: ${{ env.SURGE_DOMAIN }}
+
     steps:
     - uses: actions/checkout@v2
     - name: Setup Node JS
