@@ -3,6 +3,8 @@ name: Surge Teardown
 on:
   pull_request:
     types: [ closed ]
+    paths-ignore:
+      - '**.md'
 
 jobs:
   teardown:
