@@ -56,7 +56,8 @@ jobs:
     if: github.repository_owner == 'alexnguyenn' && github.event_name == 'pull_request'
     needs: [lint, build]
     env:
-      SURGE_DOMAIN: ${{ format('https://{0}-{1}-preview-pr{1}.surge.sh', github.repository_owner, 
+      SURGE_DOMAIN: |
+        ${{ format('https://{0}-{1}-preview-pr{1}.surge.sh', github.repository_owner, 
         github.event.repository.name, github.event.pull_request.number) }}
     
     steps:
