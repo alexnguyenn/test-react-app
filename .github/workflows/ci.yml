@@ -56,7 +56,8 @@ jobs:
     if: github.repository_owner == 'alexnguyenn' && github.event_name == 'pull_request'
     needs: [lint, build]
     env:
-      DOMAIN: ${{ format('https://{0}-preview-pr{1}.surge.sh', github.repository, github.event.pull_request.number) }}
+      SURGE_DOMAIN: ${{ format('https://{0}-{1}-preview-pr{1}.surge.sh', github.repository_owner, 
+        github.event.repository.name, github.event.pull_request.number) }}
     
     steps:
     - uses: actions/checkout@v2
@@ -74,7 +75,7 @@ jobs:
       run: npm install --global surge
       
     - name: Deploy preview to Surge
-      run: surge ./ ${{ env.DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
+      run: surge ./ ${{ env.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
       
     - uses: peter-evans/find-comment@v1
       id: fc
@@ -89,5 +90,5 @@ jobs:
         comment-id: ${{ steps.fc.outputs.comment-id }}
         issue-number: ${{ github.event.pull_request.number }}
         body: |
-          Preview is deployed to ${{ env.DOMAIN }}
+          Preview is deployed to ${{ env.SURGE_DOMAIN }}
         edit-mode: replace
