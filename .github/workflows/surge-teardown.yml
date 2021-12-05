@@ -33,3 +33,12 @@ jobs:
       if: ${{ steps.fc.outputs.comment-id != 0 }}
       continue-on-error: true
       run: surge teardown ${{ env.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
+
+    - name: Update previous deploy comment
+      uses: peter-evans/create-or-update-comment@v1
+      with:
+        comment-id: ${{ steps.fc.outputs.comment-id }}
+        issue-number: ${{ github.event.pull_request.number }}
+        body: |
+          *Preview is no longer available for this pull request.*
+        edit-mode: replace
