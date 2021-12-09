@@ -78,6 +78,9 @@ jobs:
     env:
       SURGE_DOMAIN: ${{ format('https://{0}-{1}-preview-pr{2}.surge.sh', github.repository_owner, 
         github.event.repository.name, github.event.pull_request.number) }}
+    environment:
+      name: DEV
+      url: ${{ env.SURGE_DOMAIN }}
     
     steps:
     - name: Setup Node JS
@@ -111,4 +114,5 @@ jobs:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
           Preview is deployed to ${{ env.SURGE_DOMAIN }}
+          Deployment ID: ${{ steps.deployment.outputs.deployment_id }}
         edit-mode: replace
