@@ -34,7 +34,10 @@ jobs:
     - name: Teardown with Token
       if: ${{ steps.fc.outputs.comment-id != 0 }}
       continue-on-error: true
-      run: surge teardown ${{ env.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
+      run: surge teardown ${{ env.SURGE_DOMAIN }}
+      env:
+        SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+        SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
 
     - name: Update previous deploy comment
       uses: peter-evans/create-or-update-comment@v1
