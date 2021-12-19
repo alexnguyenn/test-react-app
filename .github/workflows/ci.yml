@@ -74,6 +74,8 @@ jobs:
     name: Deploy Preview to Surge
     runs-on: ubuntu-latest
     if: github.repository_owner == 'alexnguyenn' && github.event_name == 'pull_request'
+    permissions:
+      issues: write
     needs: [build]
     env:
       SURGE_DOMAIN: ${{ format('https://{0}-{1}-preview-pr{2}.surge.sh', github.repository_owner, 
