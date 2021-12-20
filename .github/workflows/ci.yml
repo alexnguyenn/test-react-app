@@ -75,7 +75,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository_owner == 'alexnguyenn' && github.event_name == 'pull_request'
     permissions:
-      issues: write
       pull-requests: write
     needs: [build]
     env:
